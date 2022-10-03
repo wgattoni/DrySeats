@@ -1,0 +1,25 @@
+package android.example.iaproject;
+
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Build;
+import android.preference.PreferenceManager;
+
+public class NotificationReceiver extends BroadcastReceiver {
+
+    public static final int REQUEST_CODE = 12345;
+    SharedPreferences mPreferences;
+
+    @Override
+    public void onReceive(Context context, Intent intent) {
+        mPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        Intent i = new Intent(context, NotificationService.class);
+        if (mPreferences.getBoolean("Notification", true)) {
+            i.putExtra("LeadingTime", mPreferences.getString("LeadingTime", "15"));
+            i.putExtra("NotificationThreshold", mPreferences.getString("NotificationThreshold", "50%"));
+            context.startService(i);
+        }
+    }
+}
