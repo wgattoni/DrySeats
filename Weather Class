@@ -1,0 +1,50 @@
+package android.example.iaproject;
+
+public class WeatherData {
+    private int time;
+    private int rainChance;
+    private int temp;
+    private String imgURL;
+
+    public WeatherData(int time, int temperature, int rainChance, String imgURL) {
+        this.time = time;
+        this.temp = temperature;
+        this.rainChance = rainChance;
+        this.imgURL = imgURL;
+    }
+
+    public String getImgURL() {
+        return imgURL;
+    }
+
+    public void setImgURL(String imgURL) {
+        this.imgURL = imgURL;
+    }
+
+    public void setTime(int t) {
+        time = t;
+    }
+
+    public int getTime() {
+        return time;
+    }
+
+    public void setTemp(int t) {
+        temp = t;
+    }
+
+    public int getTemp() {
+        return temp;
+    }
+
+    public void setRainChance(int r) {
+        rainChance = r;
+    }
+
+    public int getRainChance() {
+        return rainChance;
+    }
+
+
+    
+}
