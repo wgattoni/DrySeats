@@ -1,0 +1,111 @@
+package android.example.iaproject;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.view.View;
+import android.view.Window;
+import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.TextView;
+
+public class Settings extends AppCompatActivity {
+    public boolean wantsNotifications = true;
+    public int leadingTime = 15;
+    public int notificationThreshold = 50;
+    public SharedPreferences mPreferences;
+    public SharedPreferences.Editor mEditor;
+    public boolean useCurrentLocation = true;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getSupportActionBar().hide();
+        setContentView(R.layout.activity_settings);
+
+        mPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        CheckBox cb = findViewById(R.id.wantsNotificationsCheckBox);
+        EditText time = findViewById(R.id.leadingTimeEditText);
+        EditText threshold = findViewById(R.id.notificationThresholdEditText);
+        TextView labelTime = findViewById(R.id.LabelLeadingTime);
+        TextView labelThreshold = findViewById(R.id.LabelThreshold);
+
+
+        cb.setChecked((mPreferences.getBoolean("Notification", false)));
+        if (cb.isChecked()) {
+            time.setVisibility(View.VISIBLE);
+            threshold.setVisibility(View.VISIBLE);
+            labelThreshold.setVisibility(View.VISIBLE);
+            labelTime.setVisibility(View.VISIBLE);
+        }
+        else   {
+            time.setVisibility(View.INVISIBLE);
+            threshold.setVisibility(View.INVISIBLE);
+            labelThreshold.setVisibility(View.INVISIBLE);
+            labelTime.setVisibility(View.INVISIBLE);
+        }
+        time.setText((mPreferences.getString("LeadingTime", "15")));
+        threshold.setText((mPreferences.getString("NotificationThreshold", "50%")));
+
+    }
+
+    public void toMain(View view){
+        Intent intent = new Intent (this, MainActivity.class);
+        startActivity(intent);
+
+
+
+        mPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        mEditor = mPreferences.edit();
+
+        CheckBox cb = findViewById(R.id.wantsNotificationsCheckBox);
+        EditText time = findViewById(R.id.leadingTimeEditText);
+        EditText threshold = findViewById(R.id.notificationThresholdEditText);
+
+
+        mEditor.putBoolean("Notification", cb.isChecked());
+        mEditor.putString("LeadingTime", time.getText().toString());
+        mEditor.putString("NotificationThreshold", threshold.getText().toString());
+        mEditor.putBoolean("useCurrentLocation", useCurrentLocation);
+
+
+        mEditor.commit();
+
+    }
+
+    public void changeNotificationPreference(View view) {
+        wantsNotifications = !wantsNotifications;
+        CheckBox cb = findViewById(R.id.wantsNotificationsCheckBox);
+        EditText time = findViewById(R.id.leadingTimeEditText);
+        EditText threshold = findViewById(R.id.notificationThresholdEditText);
+        TextView labelTime = findViewById(R.id.LabelLeadingTime);
+        TextView labelThreshold = findViewById(R.id.LabelThreshold);
+
+        if (cb.isChecked()) {
+            time.setVisibility(View.VISIBLE);
+            threshold.setVisibility(View.VISIBLE);
+            labelThreshold.setVisibility(View.VISIBLE);
+            labelTime.setVisibility(View.VISIBLE);
+        }
+        else {
+            time.setVisibility(View.INVISIBLE);
+            threshold.setVisibility(View.INVISIBLE);
+            labelThreshold.setVisibility(View.INVISIBLE);
+            labelTime.setVisibility(View.INVISIBLE);
+        }
+    }
+
+
+
+    public void wantsToUseCurrentLocation (View view) {
+        useCurrentLocation = true;
+    }
+
+    public void wantsToSetLocation (View view) {
+        useCurrentLocation = false;
+    }
+}
